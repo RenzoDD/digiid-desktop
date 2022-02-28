@@ -1,0 +1,27 @@
+{
+  "name": "digiid-desktop",
+  "version": "1.0.0",
+  "description": "A Digi-ID implementation for Desktop Operating Systems",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron src/index",
+    "build": "electron-packager ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RenzoDD/digiid-desktop.git"
+  },
+  "author": "Renzo Diaz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RenzoDD/digiid-desktop/issues"
+  },
+  "homepage": "https://github.com/RenzoDD/digiid-desktop#readme",
+  "dependencies": {
+    "digibyte-js": "^1.2.1"
+  },
+  "devDependencies": {
+    "electron": "^17.1.0",
+    "electron-packager": "^15.4.0"
+  }
+}
