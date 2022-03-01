@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/RenzoDD/digiid-desktop#readme",
   "dependencies": {
-    "digibyte-js": "^1.2.1"
+    "digibyte-js": "^1.2.2"
   },
   "devDependencies": {
     "electron": "^17.1.0",

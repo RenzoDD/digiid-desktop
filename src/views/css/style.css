@@ -1,0 +1,20 @@
+body {
+    background-color: #002352;
+    font-family: Oswald;
+}
+.my-auto {
+    color: #FFFFFF;
+}
+.btn {
+    color: #FFFFFF;
+}
+.btn:hover {
+    color: #FFFFFF;
+}
+.btn-bg {
+    background: #1D3C66;
+}
+.btn-bg:hover {
+    background-color: #00326F;
+    cursor: pointer;
+}

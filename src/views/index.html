@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.png">
+    <title>Desktop - Digi-ID</title>
+</head>
+
+<body class="d-flex flex-column h-100 px-4">
+
+    <div id="frmStart" class="my-auto d-none">
+        <div class="text-center mb-3">
+            <img src="img/logo.png" class="img-fluid" style="max-height: 100px;">
+        </div>
+        <div class="text-center">
+            <button id="btnCreateWallet" class="btn btn-sm btn-bg">
+                Create Wallet
+            </button>
+            <button id="btnRestoreWallet" class="btn btn-sm btn-bg">
+                Restore Wallet
+            </button>
+            <button id="btnHardwareWallet" class="btn btn-sm btn-bg">
+                Ledger Wallet
+            </button>
+        </div>
+    </div>
+
+    <div id="frmCreate" class="my-auto d-none">
+        <label>Word Count:</label>
+        <div class="input-group mb-3">
+            <select id="cbxWordCount" class="form-select">
+                <option>12</option>
+                <option>15</option>
+                <option>18</option>
+                <option>21</option>
+                <option>24</option>
+            </select>
+            <button id="btnGenerateMnemonic" class="btn btn-bg" type="button">Generate</button>
+        </div>
+        <label>Mnemonic Phrase:</label>
+        <div class="text-center mb-3" id="lblMnemonicGenerated">
+
+        </div>
+        <div class="text-center">
+            <button id="btnContinueCreate" class="btn btn-sm btn-bg" disabled>Continue</button>
+        </div>
+    </div>
+    <div id="frmRestore" class="my-auto d-none">
+        <label>Mnemonic Phrase:</label>
+        <div class="text-center mb-3" id="lblMnemonicPhrase">
+
+        </div>
+        <small>Sugestion: <span id="lblSuggestion">-</span></small>
+        <div class="input-group mb-3">
+            <input type="text" id="txtWord" class="form-control" readonly>
+            <button class="btn btn-bg" id="btnAcceptSuggestion">Accept Suggestion</button>
+        </div>
+        <div class="text-center font-monospace">
+            <div class="mb-2">
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">Q</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">W</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">E</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">R</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">T</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">Y</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">U</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">I</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">O</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">P</button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">A</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">S</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">D</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">F</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">G</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">H</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">J</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">K</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">L</button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">Z</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">X</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">C</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">V</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">B</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">N</button>
+                <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">M</button>
+            </div>
+            <div class="mb-2">
+                <button id="btnBackSpace" class="btn btn-sm btn-bg">Back Space</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <button id="btnContinueRestore" class="btn btn-sm btn-bg">Continue</button>
+        </div>
+    </div>
+    <div id="frmSetPassword" class="my-auto d-none">
+        <div class="mb-3">
+            <label>Password:</label>
+            <input type="password" class="form-control" id="txtCreatePassword">
+        </div>
+        <div class="mb-3">
+            <label>Repeat Password:</label>
+            <input type="password" class="form-control" id="txtRepeatPassword">
+        </div>
+        <div class="text-center">
+            <button id="btnSaveWallet" class="btn btn-sm btn-bg">Save Wallet</button>
+        </div>
+    </div>
+
+    <div id="frmApp" class="my-auto d-none">
+        <div class="text-center mb-3">
+            <img src="img/logo.png" class="img-fluid" style="max-height: 100px;">
+        </div>
+        <div class="text-center mb-3" id="lblStatus">
+            Click on any Digi-ID QR to sign it or paste the URI here!
+        </div>
+        <div class="text-center mb-2">
+            <input type="text" class="form-control" placeholder="Digi-ID URI" id="txtURI">
+        </div>
+        <div class="text-center mb-3">
+            <button class="btn btn-bg" id="btnCheckSign">Sign</button>
+        </div>
+    </div>
+
+    <div id="frmSign" class="my-auto d-none">
+        <div class="text-center mb-3">
+            <img src="img/logo.png" class="img-fluid" style="max-height: 100px;">
+        </div>
+        <div class="text-center font-monospace" id="lblCallback">
+
+        </div>
+        <div class="mb-2" id="gbPassword">
+            <label>Password:</label>
+            <input type="password" class="form-control" id="txtPassword">
+        </div>
+        <div class="text-start mb-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="cbxIndex">
+                <label class="form-check-label" for="cbxIndex">Use custom index</label>
+            </div>
+        </div>
+        <div class="mb-3 d-none" id="gbIndex">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Index</span>
+                <input type="number" class="form-control text-center" id="txtIndex" placeholder="Account index" value="0" min="0" max="4294967295">
+            </div>
+        </div>
+
+        <div class="text-center mb-3">
+            <button id="btnSign" class="btn btn-sm btn-bg">
+                Sign
+            </button>
+            <button id="btnReturn" class="btn btn-sm btn-bg">
+                Return
+            </button>
+        </div>
+
+        <div class="text-start b-none" id="gbHash">
+            <label>Verify and sign on your device:</label>
+            <div class="text-center text-break text-uppercase font-monospace" id="lblHash">
+                a871c47a7f48a12b38a994e48a9659fab5d6376f3dbce37559bcb617efe8662d
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="js/ui.js"></script>
+
+    <script src="js/start.js"></script>
+    <script src="js/create.js"></script>
+    <script src="js/restore.js"></script>
+    <script src="js/setpassword.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/sign.js"></script>
+</body>
+
+</html>

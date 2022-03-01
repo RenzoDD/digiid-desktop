@@ -21,7 +21,7 @@ if (!app.requestSingleInstanceLock()) {
 app.whenReady().then(() => {
   myWindow = new BrowserWindow({
     width: 400,
-    height: 400,
+    height: 500,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -33,7 +33,7 @@ app.whenReady().then(() => {
     show: false
   })
   //myWindow.setAlwaysOnTop(true, 'screen');
-  myWindow.loadFile(__dirname + '\\views\\index.html');
+  myWindow.loadFile(__dirname + '/views/index.html');
   myWindow.webContents.once('did-finish-load', function () { myWindow.show() });
 })
 
@@ -45,5 +45,6 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
+  if (process.platform !== 'darwin')
+    app.quit()
 })
