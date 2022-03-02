@@ -26,7 +26,7 @@ app.whenReady().then(() => {
       nodeIntegration: true,
       contextIsolation: false
     },
-    icon: __dirname + "\\views\\img\\logo.png",
+    icon: __dirname + "\\views\\img\\icon.png",
     autoHideMenuBar: true,
     //maximizable: false,
     //resizable: false,

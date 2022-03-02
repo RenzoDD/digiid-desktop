@@ -4,8 +4,7 @@
   "description": "A Digi-ID implementation for Desktop Operating Systems",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron src/index",
-    "build": "electron-packager ."
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -18,10 +17,11 @@
   },
   "homepage": "https://github.com/RenzoDD/digiid-desktop#readme",
   "dependencies": {
-    "digibyte-js": "^1.2.2"
+    "@ledgerhq/hw-app-btc": "^6.24.1",
+    "@ledgerhq/hw-transport-node-hid": "^6.24.1",
+    "digibyte-js": "^1.2.4"
   },
   "devDependencies": {
-    "electron": "^17.1.0",
-    "electron-packager": "^15.4.0"
+    "electron": "^17.1.0"
   }
 }
