@@ -7,5 +7,9 @@ btnRestoreWallet.addEventListener('click', () => {
     FormOpen(frmRestore);
 });
 btnHardwareWallet.addEventListener('click', () => {
-    console.log(__dirname);
+    fs.writeFileSync(global.path + '/ledger.dgb', "Nothing here, hardware wallet!");
+	gbPassword.classList.add('d-none');
+    global.ledger = true;
+    FormClose();
+    FormOpen(frmApp);
 })

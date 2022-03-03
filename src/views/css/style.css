@@ -1,15 +1,16 @@
 body {
     background-color: #002352;
-    font-family: Oswald;
 }
 .my-auto {
     color: #FFFFFF;
 }
 .btn {
     color: #FFFFFF;
+    border-color: #002352;
 }
 .btn:hover {
     color: #FFFFFF;
+    border-color: #002352;
 }
 .btn-bg {
     background: #1D3C66;

@@ -4,13 +4,19 @@ const path = require('path')
 let myWindow = null;
 
 
+if (__dirname.indexOf("app.asar") !== -1)
+  global.path = __dirname.substring(0, __dirname.length - 23);
+else
+  global.path = __dirname.substring(0, __dirname.length - 4);
+
 // handle url
 var uri = process.argv[1] || '';
 if (uri.startsWith('digiid://'))
-  fs.writeFileSync(__dirname + '/uri', uri);
+  fs.writeFileSync(global.path + '/uri', uri);
 
 // set default protocol
-app.setAsDefaultProtocolClient('digiid')
+if (__dirname.indexOf("app.asar") !== -1)
+  app.setAsDefaultProtocolClient('digiid')
 
 // only one instance
 if (!app.requestSingleInstanceLock()) {
@@ -23,16 +29,17 @@ app.whenReady().then(() => {
     width: 400,
     height: 500,
     webPreferences: {
+      devTools: false,
       nodeIntegration: true,
       contextIsolation: false
     },
     icon: __dirname + "\\views\\img\\icon.png",
     autoHideMenuBar: true,
-    //maximizable: false,
-    //resizable: false,
+    maximizable: false,
+    resizable: false,
     show: false
   })
-  //myWindow.setAlwaysOnTop(true, 'screen');
+  myWindow.setAlwaysOnTop(true, 'screen');
   myWindow.loadFile(__dirname + '/views/index.html');
   myWindow.webContents.once('did-finish-load', function () { myWindow.show() });
 })

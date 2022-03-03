@@ -8,3 +8,7 @@ btnCheckSign.addEventListener('click', () => {
         FormOpen(frmSign);
     }
 });
+
+btnDigiByte.addEventListener('click', () => {
+    require('electron').shell.openExternal("https://www.digi-id.io/");
+})

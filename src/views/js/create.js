@@ -7,3 +7,10 @@ btnContinueCreate.addEventListener('click', () => {
     FormClose();
     FormOpen(frmSetPassword);
 });
+
+btnReturnCreate.addEventListener('click', () => {
+    btnContinueCreate.disabled = true;
+    lblMnemonicGenerated.innerHTML = "";
+    FormClose();
+    FormOpen(frmStart);
+})
