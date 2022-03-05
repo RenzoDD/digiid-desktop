@@ -20,8 +20,8 @@ if (__dirname.indexOf("app.asar") !== -1)
 
 // only one instance
 if (!app.requestSingleInstanceLock()) {
-  app.quit()
-  return;
+  app.quit();
+  process.exit();
 }
 
 app.whenReady().then(() => {
@@ -29,14 +29,14 @@ app.whenReady().then(() => {
     width: 400,
     height: 500,
     webPreferences: {
-      devTools: false,
+      //devTools: false,
       nodeIntegration: true,
       contextIsolation: false
     },
     icon: __dirname + "\\views\\img\\icon.png",
     autoHideMenuBar: true,
-    maximizable: false,
-    resizable: false,
+    //maximizable: false,
+    //resizable: false,
     show: false
   })
   myWindow.setAlwaysOnTop(true, 'screen');
