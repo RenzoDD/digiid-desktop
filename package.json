@@ -1,6 +1,6 @@
 {
   "name": "digiid-desktop",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "A Digi-ID implementation for Desktop Operating Systems",
   "main": "src/index.js",
   "scripts": {
