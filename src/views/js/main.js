@@ -3,6 +3,33 @@ const HDPrivateKey = require("digibyte-js/lib/hdprivatekey");
 const DigiID = require("digibyte-js/lib/digiid");
 const crypto = require('crypto');
 
+function SHA256(data) {
+    return crypto.createHash('sha256').update(data).digest();
+}
+function EncryptAES256(data, password) {
+    var data = Buffer.from(data);
+    var password = SHA256(Buffer.from(password));
+    var cipher = crypto.createCipheriv("aes-256-cbc", password, Buffer.alloc(16));
+    var encryptedData = cipher.update(data, "utf-8", "hex") + cipher.final("hex");
+    return Buffer.from(encryptedData, 'hex');
+}
+function DecryptAES256(data, password) {
+    var data = Buffer.from(data);
+    var password = SHA256(Buffer.from(password));
+    var decipher = crypto.createDecipheriv("aes-256-cbc", password, Buffer.alloc(16));
+    const decryptedData = decipher.update(data, "hex", "utf-8") + decipher.final("utf8");
+
+    return decryptedData;
+}
+function POST(url, data) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(data));
+    console.log(xmlhttp)
+    return xmlhttp.status;
+}
+
 /*
    __                 _____ _             _   
   / _|               / ____| |           | |  
@@ -13,19 +40,13 @@ const crypto = require('crypto');
 */
 
 btnCreateWallet.addEventListener('click', () => {
-    
     FormOpen(frmCreate);
 });
 btnRestoreWallet.addEventListener('click', () => {
-    
     FormOpen(frmRestore);
 });
 btnHardwareWallet.addEventListener('click', () => {
-    fs.writeFileSync(global.path + '/ledger.dgb', "Nothing here, hardware wallet!");
-	gbPassword.classList.add('d-none');
-    global.wallet = "ledger";
-    
-    FormOpen(frmApp);
+    FormOpen(frmHardware);
 })
 
 
@@ -44,16 +65,12 @@ btnGenerateMnemonic.addEventListener('click', () => {
     lblMnemonicGenerated.innerHTML = BIP39.CreateMnemonic(parseInt(cbxWordCount.value));
     btnContinueCreate.disabled = false;
 });
-
 btnContinueCreate.addEventListener('click', () => {
-    
     FormOpen(frmSetPassword);
 });
-
 btnReturnCreate.addEventListener('click', () => {
     btnContinueCreate.disabled = true;
     lblMnemonicGenerated.innerHTML = "";
-    
     FormOpen(frmStart);
 })
 
@@ -71,14 +88,6 @@ btnReturnCreate.addEventListener('click', () => {
 
 const words = BIP39.words;
 
-function EncryptAES256(data, password) {
-    var data = Buffer.from(data);
-    var password = this.SHA256(Buffer.from(password));
-    var cipher = crypto.createCipheriv("aes-256-cbc", password, Buffer.alloc(16));
-    var encryptedData = cipher.update(data, "utf-8", "hex") + cipher.final("hex");
-    return Buffer.from(encryptedData, 'hex');
-}
-
 btnAcceptSuggestion.addEventListener('click', () => {
     var suggestion = words.find(x => x.startsWith(lblWord.innerHTML.toLowerCase()));
     if (suggestion && txtSuggestion.value != "") {
@@ -89,29 +98,52 @@ btnAcceptSuggestion.addEventListener('click', () => {
 });
 btnBackSpace.addEventListener('click', () => {
     lblWord.innerHTML = lblWord.innerHTML.substring(0, lblWord.innerHTML.length - 1);
-    if (lblWord.innerHTML != '') {
+    if (lblWord.innerHTML != '')
         txtSuggestion.value = words.find(x => x.startsWith(lblWord.innerHTML.toLowerCase())) || "Not in BIP39"
-    } else {
+    else
         txtSuggestion.value = '';
-    }
 });
 btnContinueRestore.addEventListener('click', () => {
-    if (BIP39.CheckMnemonic(lblMnemonicPhrase.innerHTML.trim())){
-        
+    if (BIP39.CheckMnemonic(lblMnemonicPhrase.innerHTML.trim()))
         FormOpen(frmSetPassword);
+    else {
+        lblMessage.innerHTML = 'Invalid Mnemonic';
+        setTimeout(() => {
+            lblMessage.innerHTML = '';
+        }, 5000);
     }
-    else
-        alert('Invalid Mnemonic')
 })
-
 function keyboardClick(button) {
     lblWord.innerHTML += button.innerHTML;
     txtSuggestion.value = words.find(x => x.startsWith(lblWord.innerHTML.toLowerCase())) || "Not in BIP39"
 }
-
+btnClearRestore.addEventListener('click', () => {
+    lblMnemonicPhrase.innerHTML = "";
+});
 btnReturnRestore.addEventListener('click', () => {
     lblMnemonicPhrase.innerHTML = "";
-    
+    FormOpen(frmStart);
+});
+
+
+
+
+/*
+   __                _    _               _                     __          __   _ _      _   
+  / _|              | |  | |             | |                    \ \        / /  | | |    | |  
+ | |_ _ __ _ __ ___ | |__| | __ _ _ __ __| |_      ____ _ _ __ __\ \  /\  / /_ _| | | ___| |_ 
+ |  _| '__| '_ ` _ \|  __  |/ _` | '__/ _` \ \ /\ / / _` | '__/ _ \ \/  \/ / _` | | |/ _ \ __|
+ | | | |  | | | | | | |  | | (_| | | | (_| |\ V  V / (_| | | |  __/\  /\  / (_| | | |  __/ |_ 
+ |_| |_|  |_| |_| |_|_|  |_|\__,_|_|  \__,_| \_/\_/ \__,_|_|  \___| \/  \/ \__,_|_|_|\___|\__|
+*/
+
+btnLedgerWallet.addEventListener('click', () => {
+    fs.writeFileSync(global.path + '/ledger.dgb', "Nothing here, hardware wallet!");
+    gbPassword.classList.add('d-none');
+    global.wallet = "ledger";
+    FormOpen(frmApp);
+});
+btnReturnHardware.addEventListener('click', () => {
     FormOpen(frmStart);
 });
 
@@ -130,16 +162,13 @@ btnReturnRestore.addEventListener('click', () => {
 btnSaveWallet.addEventListener('click', () => {
     if (txtCreatePassword.value == txtRepeatPassword.value) {
         var seed = BIP39.MnemonicToSeed((lblMnemonicGenerated.innerHTML + lblMnemonicPhrase.innerHTML).trim());
-        var xpriv = HDPrivateKey.fromSeed(seed).toString();
-        data = Buffer.from(xpriv);
-        var password = crypto.createHash('sha256').update(txtCreatePassword.value).digest();
-        var cipher = crypto.createCipheriv("aes-256-cbc", password, Buffer.alloc(16));
-        var encryptedData = cipher.update(data, "utf-8", "hex") + cipher.final("hex");
+        var data = Buffer.from(HDPrivateKey.fromSeed(seed).toString());
 
-        fs.writeFileSync(global.path + '/wallet.dgb', Buffer.from(encryptedData, 'hex'));
-	    global.wallet = "software";
+        var encrypted = EncryptAES256(data, txtCreatePassword.value);
 
-        
+        fs.writeFileSync(global.path + '/wallet.dgb', encrypted);
+        global.wallet = "software";
+
         FormOpen(frmApp);
     } else {
         lblPasswordAlert.classList.remove("d-none")
@@ -162,19 +191,25 @@ btnSaveWallet.addEventListener('click', () => {
 */
 
 btnCheckSign.addEventListener('click', () => {
-    var digiid = null
-    try { digiid = new DigiID(txtURI.value) } catch {}
+    var digiid = null;
+
+    try { digiid = new DigiID(txtURI.value) }
+    catch { }
 
     if (digiid) {
         lblCallback.innerHTML = digiid.callback;
-        
         FormOpen(frmSign);
     }
 });
-
 btnDigiByte.addEventListener('click', () => {
     require('electron').shell.openExternal("https://www.digi-id.io/");
-})
+});
+btnSettings.addEventListener('click', () => {
+    FormOpen(frmSettings);
+});
+btnAbout.addEventListener('click', () => {
+    FormOpen(frmAbout);
+});
 
 
 
@@ -193,26 +228,18 @@ btnDigiByte.addEventListener('click', () => {
 const Transport = require('@ledgerhq/hw-transport-node-hid').default;
 const AppBtc = require("@ledgerhq/hw-app-btc").default;
 
-function POST(url, data) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", url, false);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify(data));
-    console.log(xmlhttp)
-    return xmlhttp.status;
-}
-
 btnSign.addEventListener('click', async () => {
     if (global.wallet == "software") {
         var hdPrivateKey = null;
         var digiid = null;
         try {
             var data = fs.readFileSync(global.path + '/wallet.dgb')
-            var password = crypto.createHash('sha256').update(txtPassword.value).digest()
-            var decipher = crypto.createDecipheriv("aes-256-cbc", password, Buffer.alloc(16));
-            var xprv = decipher.update(data, "hex", "utf-8") + decipher.final("utf8");
+            var xprv = DecryptAES256(data, txtPassword.value);
+            txtPassword.value = "";
 
             hdPrivateKey = new HDPrivateKey(xprv);
+            delete xprv;
+
             digiid = new DigiID(txtURI.value);
         } catch { }
 
@@ -228,7 +255,7 @@ btnSign.addEventListener('click', async () => {
         else {
             lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Digi-ID error";
         }
-    } else {
+    } else if (global.wallet == "ledger") {
         var digiid = new DigiID(txtURI.value);
         var path = digiid.path(parseInt(txtIndex.value));
 
@@ -237,8 +264,8 @@ btnSign.addEventListener('click', async () => {
             lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Connect hardware wallet";
             gbHash.classList.add('d-none');
         }
-                
-        lblHash.innerHTML = crypto.createHash('sha256').update(txtURI.value).digest('hex');
+
+        lblHash.innerHTML = SHA256(txtURI.value).toString('hex');
         gbHash.classList.remove('d-none');
 
         if (transport) {
@@ -269,15 +296,14 @@ btnSign.addEventListener('click', async () => {
     }
 
     txtURI.value = "";
-    
+
     FormOpen(frmApp);
     setTimeout(() => { lblStatus.innerHTML = "Digi-ID authentication protocol"; }, 5000);
 });
-
 btnReturn.addEventListener('click', () => {
     lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Authentication canceled";
     txtURI.value = "";
-    
+
     FormOpen(frmApp);
     setTimeout(() => { lblStatus.innerHTML = "Digi-ID authentication protocol"; }, 5000);
 });
@@ -286,4 +312,120 @@ cbxIndex.addEventListener('change', () => {
     txtIndex.value = 0;
     if (!cbxIndex.checked)
         gbIndex.classList.add('d-none');
+});
+
+
+
+
+/*
+   __                 _____      _   _   _                 
+  / _|               / ____|    | | | | (_)                
+ | |_ _ __ _ __ ___ | (___   ___| |_| |_ _ _ __   __ _ ___ 
+ |  _| '__| '_ ` _ \ \___ \ / _ \ __| __| | '_ \ / _` / __|
+ | | | |  | | | | | |____) |  __/ |_| |_| | | | | (_| \__ \
+ |_| |_|  |_| |_| |_|_____/ \___|\__|\__|_|_| |_|\__, |___/
+                                                  __/ |    
+                                                 |___/     
+*/
+
+btnReturnSettings.addEventListener('click', () => {
+    FormOpen(frmApp)
+});
+btnRestartSettings.addEventListener('click', () => {
+    FormOpen(frmRestart);
+});
+btnPasswordSettings.addEventListener('click', () => {
+    FormOpen(frmChangePassword);
+});
+
+
+
+
+/*
+   __                         _                 _   
+  / _|                  /\   | |               | |  
+ | |_ _ __ _ __ ___    /  \  | |__   ___  _   _| |_ 
+ |  _| '__| '_ ` _ \  / /\ \ | '_ \ / _ \| | | | __|
+ | | | |  | | | | | |/ ____ \| |_) | (_) | |_| | |_ 
+ |_| |_|  |_| |_| |_/_/    \_\_.__/ \___/ \__,_|\__|
+*/
+
+btnReturnAbout.addEventListener('click', () => {
+    FormOpen(frmApp)
+});
+
+
+
+
+/*
+   __                _____           _             _   
+  / _|              |  __ \         | |           | |  
+ | |_ _ __ _ __ ___ | |__) |___  ___| |_ __ _ _ __| |_ 
+ |  _| '__| '_ ` _ \|  _  // _ \/ __| __/ _` | '__| __|
+ | | | |  | | | | | | | \ \  __/\__ \ || (_| | |  | |_ 
+ |_| |_|  |_| |_| |_|_|  \_\___||___/\__\__,_|_|   \__|
+*/
+
+btnRestart.addEventListener('click', () => {
+    if (txtRestart.value == 'restart') {
+        if (fs.existsSync(global.path + '/wallet.dgb'))
+            fs.unlinkSync(global.path + '/wallet.dgb');
+        if (fs.existsSync(global.path + '/ledger.dgb'))
+            fs.unlinkSync(global.path + '/ledger.dgb');
+
+        gbPassword.classList.remove('d-none');
+        delete global.wallet;
+
+        txtRestart.value = '';
+        FormOpen(frmStart);
+    }
+});
+btnReturnRestart.addEventListener('click', () => {
+    FormOpen(frmSettings);
+});
+
+
+
+
+
+/*
+   __                 _____ _                            _____                                    _ 
+  / _|               / ____| |                          |  __ \                                  | |
+ | |_ _ __ _ __ ___ | |    | |__   __ _ _ __   __ _  ___| |__) |_ _ ___ _____      _____  _ __ __| |
+ |  _| '__| '_ ` _ \| |    | '_ \ / _` | '_ \ / _` |/ _ \  ___/ _` / __/ __\ \ /\ / / _ \| '__/ _` |
+ | | | |  | | | | | | |____| | | | (_| | | | | (_| |  __/ |  | (_| \__ \__ \\ V  V / (_) | | | (_| |
+ |_| |_|  |_| |_| |_|\_____|_| |_|\__,_|_| |_|\__, |\___|_|   \__,_|___/___/ \_/\_/ \___/|_|  \__,_|
+                                               __/ |                                                
+                                              |___/                                                 
+*/
+
+btnChangePassword.addEventListener('click', () => {
+    if (txtNewPassword.value == txtNewRepeatPassword.value) {
+        try {
+            var data = fs.readFileSync(global.path + '/wallet.dgb')
+            var xprv = DecryptAES256(data, txtOldPassword.value);
+            txtPassword.value = "";
+        }
+        catch {
+            lblChangePasswordMessage.innerHTML = 'Wrong password';
+            setTimeout(() => {
+                lblChangePasswordMessage.innerHTML = '';
+            }, 5000);
+        }
+
+        var encrypted = EncryptAES256(xprv, txtNewPassword.value);
+        fs.writeFileSync(global.path + '/wallet.dgb', encrypted);
+
+        lblStatus.innerHTML = 'Password changed';
+        setTimeout(() => { lblStatus.innerHTML = "Digi-ID authentication protocol"; }, 5000);
+        FormOpen(frmApp);
+    } else {
+        lblChangePasswordMessage.innerHTML = "The passwords doesn't match";
+        setTimeout(() => {
+            lblChangePasswordMessage.innerHTML = '';
+        }, 5000);
+    }
+});
+btnReturnChange.addEventListener('click', () => {
+    FormOpen(frmSettings);
 });

@@ -8,7 +8,7 @@
 
     <link href="vendor/bootstrap.css" rel="stylesheet">
     <link href="vendor/bootstrap-icons.css" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="img/icon.png">
     <title>Desktop - Digi-ID</title>
@@ -17,18 +17,23 @@
 <body class="d-flex flex-column h-100 px-4" id="winWindow">
 
     <div id="frmStart" class="frm my-auto d-none">
-        <div class="text-center mb-3">
+        <div class="text-center mb-5">
             <img src="img/icon.png" class="img-fluid" style="max-height: 100px;">
         </div>
         <div class="text-center">
-            <button id="btnCreateWallet" class="btn btn-sm btn-bg">
+            <button id="btnCreateWallet" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi bi-magic"></i>
                 Create Wallet
             </button>
-            <button id="btnRestoreWallet" class="btn btn-sm btn-bg">
+            <br>
+            <button id="btnRestoreWallet" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi bi-key"></i>
                 Restore Wallet
             </button>
-            <button id="btnHardwareWallet" class="btn btn-sm btn-bg">
-                Ledger Wallet
+            <br>
+            <button id="btnHardwareWallet" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi bi-usb-symbol"></i>
+                Hardware Wallet
             </button>
         </div>
     </div>
@@ -44,7 +49,7 @@
                 <option value="21">Twenty One</option>
                 <option value="24">Twenty Four</option>
             </select>
-            <button id="btnGenerateMnemonic" class="btn btn-bg" type="button">
+            <button id="btnGenerateMnemonic" class="btn btn-bg" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Generate">
                 <i class="bi bi-arrow-repeat"></i>
             </button>
         </div>
@@ -53,10 +58,10 @@
 
         </div>
         <div class="text-center">
-            <button id="btnContinueCreate" class="btn btn-sm btn-bg" disabled>
+            <button id="btnContinueCreate" class="btn btn-sm btn-bg" disabled data-bs-toggle="tooltip" data-bs-placement="top" title="Continue">
                 <i class="bi bi-check-lg"></i>
             </button>
-            <button id="btnReturnCreate" class="btn btn-sm btn-bg">
+            <button id="btnReturnCreate" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="top" title="Return">
                 <i class="bi bi-arrow-return-left"></i>
             </button>
         </div>
@@ -64,18 +69,21 @@
     <div id="frmRestore" class="frm my-auto d-none">
         <h1 class="text-center">Restore Wallet</h1>
         <label>Mnemonic Phrase:</label>
-        <div class="text-center mb-3 font-monospace" id="lblMnemonicPhrase" style="height: 110px;">
+        <div class="text-center mb-3 font-monospace" id="lblMnemonicPhrase" style="min-height: 50px;">
 
         </div>
         <small>Your input: <span id="lblWord"></span></small>
-        <div class="input-group mb-3">
+        <div class="input-group input-group-sm mb-3">
             <input type="text" id="txtSuggestion" class="form-control" readonly>
             <button class="btn btn-bg" id="btnBackSpace">
                 <i class="bi bi-backspace-fill"></i>
             </button>
-            <button class="btn btn-bg" id="btnAcceptSuggestion">
-                <i class="bi bi-check-lg"></i>
+            <button class="btn btn-bg" id="btnAcceptSuggestion" data-bs-toggle="tooltip" data-bs-placement="left" title="Accept suggestion">
+                <i class="bi bi-arrow-right"></i>
             </button>
+        </div>
+        <div id="lblMessage" class="text-center mb-3">
+
         </div>
         <div class="text-center font-monospace">
             <div class="mb-2">
@@ -111,16 +119,54 @@
                 <button class="btn btn-sm btn-bg" onclick="keyboardClick(this)">M</button>
             </div>
             <div class="mb-2">
-                <button id="btnContinueRestore" class="btn btn-sm btn-bg">
+                <button id="btnContinueRestore" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="top" title="Continue">
                     <i class="bi bi-check-lg"></i>
                 </button>
-                <button id="btnReturnRestore" class="btn btn-sm btn-bg">
+                <button id="btnClearRestore" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear">
+                    <i class="bi bi-stars"></i>
+                </button>
+                <button id="btnReturnRestore" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="top" title="Return">
                     <i class="bi bi-arrow-return-left"></i>
                 </button>
             </div>
         </div>
     </div>
+    <div id="frmHardware" class="frm my-auto d-none">
+        <div class="text-center mb-5">
+            <img src="img/icon.png" class="img-fluid" style="max-height: 100px;">
+        </div>
+        <div class="text-start mb-3">
+            Select your brand:
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnLedgerWallet" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-palette2" viewBox="0 0 500 500">
+                        <path d="M 424.087 -5.706 L 185.387 -5.706 L 185.387 314.594 L 505.687 314.594 L 505.687 77.594 C 505.887 32.694 469.087 -5.706 424.087 -5.706 Z M 112.087 -5.706 L 72.087 -5.706 C 27.087 -5.706 -11.413 30.994 -11.413 77.794 L -11.413 117.794 L 112.087 117.794 L 112.087 -5.706 Z M -11.413 192.794 L 112.087 192.794 L 112.087 316.294 L -11.413 316.294 L -11.413 192.794 Z M 382.387 513.094 L 422.387 513.094 C 467.387 513.094 505.887 476.494 505.887 429.594 L 505.887 389.694 L 382.387 389.694 L 382.387 513.094 Z M 185.387 389.794 L 308.887 389.794 L 308.887 513.294 L 185.387 513.294 L 185.387 389.794 Z M -11.413 389.794 L -11.413 429.794 C -11.413 474.794 25.187 513.294 72.087 513.294 L 112.087 513.294 L 112.087 389.794 L -11.413 389.794 Z" />
+                    </svg>
+                </i>
+                Ledger
+            </button>
+            <!--
+                <br>
+                <button id="btnTrezorWallet" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                    <i class="bi">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-palette2" viewBox="0 0 500 500">
+                            <path d="M 263.423 4.85 C 196.618 4.85 142.554 58.914 142.554 125.718 L 142.554 171.018 C 119.095 175.265 95.569 180.928 95.569 188.276 L 95.569 424.687 C 95.569 424.687 95.569 431.225 102.917 434.326 C 129.544 445.112 234.301 482.188 258.367 490.682 C 261.468 491.828 262.344 491.828 263.153 491.828 C 264.299 491.828 264.838 491.828 267.939 490.682 C 292.005 482.188 397.031 445.112 423.659 434.326 C 430.467 431.495 430.737 424.956 430.737 424.956 L 430.737 188.276 C 430.737 180.928 407.548 174.996 384.021 171.018 L 384.021 125.718 C 384.358 58.914 329.957 4.85 263.423 4.85 Z M 263.423 62.621 C 302.791 62.621 326.587 86.417 326.587 125.785 L 326.587 165.154 C 282.433 162.053 244.75 162.053 200.326 165.154 L 200.326 125.785 C 200.326 86.35 224.122 62.621 263.423 62.621 Z M 263.153 223.127 C 318.093 223.127 364.202 227.374 364.202 234.992 L 364.202 382.487 C 364.202 384.779 363.933 385.049 361.91 385.858 C 359.955 386.734 268.209 419.833 268.209 419.833 C 268.209 419.833 264.501 420.979 263.423 420.979 C 262.277 420.979 258.636 419.563 258.636 419.563 C 258.636 419.563 166.89 386.464 164.935 385.588 C 162.98 384.712 162.643 384.442 162.643 382.217 L 162.643 234.722 C 162.104 227.104 208.213 223.127 263.153 223.127 Z" />
+                        </svg>
+                    </i>
+                    Trezor
+                </button>
+            -->
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnReturnHardware" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="top" title="Return">
+                <i class="bi bi-arrow-return-left"></i>
+            </button>
+        </div>
+    </div>
     <div id="frmSetPassword" class="frm my-auto d-none">
+        <h1 class="text-center">Set password</h1>
         <div class="mb-3">
             <label>Password:</label>
             <input type="password" class="form-control" id="txtCreatePassword">
@@ -146,18 +192,18 @@
         </div>
         <div class="input-group mb-2">
             <input type="text" class="form-control" placeholder="Digi-ID URI" id="txtURI">
-            <button class="btn btn-bg" id="btnCheckSign">
+            <button class="btn btn-bg" id="btnCheckSign" data-bs-toggle="tooltip" data-bs-placement="left" title="Sign">
                 <i class="bi bi-box-arrow-in-right"></i>
             </button>
         </div>
         <div class="text-center mb-3">
-            <button class="btn btn-bg" id="btnDigiByte">
+            <button class="btn btn-bg" id="btnDigiByte" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Web site">
                 <i class="bi bi-globe2"></i>
             </button>
-            <button class="btn btn-bg" id="btnSettings">
+            <button class="btn btn-bg" id="btnSettings" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
                 <i class="bi bi-gear-fill"></i>
             </button>
-            <button class="btn btn-bg" id="btnAbout">
+            <button class="btn btn-bg" id="btnAbout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="About">
                 <i class="bi bi-question-circle-fill"></i>
             </button>
         </div>
@@ -199,14 +245,118 @@
         <div class="text-start d-none" id="gbHash">
             <label>Verify and sign on your device:</label>
             <div class="text-center text-break text-uppercase font-monospace" id="lblHash">
-                
+
             </div>
+        </div>
+    </div>
+
+    <div id="frmSettings" class="frm my-auto d-none">
+        <div class="text-center mb-5">
+            <img src="img/icon.png" class="img-fluid" style="max-height: 100px;">
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnRestartSettings" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi bi-trash"></i>
+                Restart Wallet
+            </button>
+            <br>
+            <button id="btnPasswordSettings" class="btn btn-sm btn-bg mb-2" style="width: 150px;">
+                <i class="bi bi-braces-asterisk"></i>
+                Change Password
+            </button>
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnReturnSettings" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return">
+                <i class="bi bi-arrow-return-left"></i>
+            </button>
+        </div>
+    </div>
+    <div id="frmAbout" class="frm my-auto d-none">
+        <div class="row mb-4">
+            <div class="col-6">
+                <h3>Created by:</h3>
+                <div class="ps-3">
+                    @RenzoDGB (Renzo Diaz)
+                </div>
+            </div>
+            <div class="col-6">
+                <h3>Donations:</h3>
+                <div class="text-center">
+                    <img src="img/donations.png" class="img-fluid mx-auto" style="max-width: 75%;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <h3>Sponsors:</h3>
+                <div class="ps-3">
+                    <div>JohnnyLaw.DGB</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h3>Testers:</h3>
+                <div class="ps-3">
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <button id="btnReturnAbout" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return">
+                <i class="bi bi-arrow-return-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="frmRestart" class="frm my-auto d-none">
+        <h1 class="text-center">Restart wallet</h1>
+
+        <div class="mb-3">
+            <label>Type 'restart':</label>
+            <input type="text" class="form-control" id="txtRestart" placeholder="Confirmation text">
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnRestart" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Restart wallet">
+                <i class="bi bi-trash"></i>
+            </button>
+            <button id="btnReturnRestart" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return">
+                <i class="bi bi-arrow-return-left"></i>
+            </button>
+        </div>
+    </div>
+    <div id="frmChangePassword" class="frm my-auto d-none">
+        <h1 class="text-center">Change password</h1>
+        <div class="mb-3">
+            <label>Old password:</label>
+            <input type="password" class="form-control" id="txtOldPassword">
+        </div>
+        <div class="mb-3">
+            <label>New password:</label>
+            <input type="password" class="form-control" id="txtNewPassword">
+            <label>Repeat password:</label>
+            <input type="password" class="form-control" id="txtNewRepeatPassword">
+        </div>
+        <div id="lblChangePasswordMessage" class="text-center mb-3">
+
+        </div>
+        <div class="text-center mb-3">
+            <button id="btnChangePassword" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change password">
+                <i class="bi bi-check-lg"></i>
+            </button>
+            <button id="btnReturnChange" class="btn btn-sm btn-bg" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return">
+                <i class="bi bi-arrow-return-left"></i>
+            </button>
         </div>
     </div>
 
     <script src="vendor/bootstrap.js"></script>
     <script src="js/app.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 </body>
 
 </html>
