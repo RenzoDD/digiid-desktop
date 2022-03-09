@@ -12,7 +12,10 @@
     "type": "git",
     "url": "git+https://github.com/RenzoDD/digiid-desktop.git"
   },
-  "author": "Renzo Diaz",
+  "author": {
+    "name": "Renzo Diaz",
+    "email": "renzo.diaz@remadi.net"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/RenzoDD/digiid-desktop/issues"
@@ -47,15 +50,17 @@
           "type": "link",
           "path": "/Applications"
         }
-      ]
+      ],
+      "icon": "src/views/img/icon.icns"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb",
-        "snap",
         "rpm"
-      ]
+      ],
+      "category":"Authentication",
+      "icon": "src/views/img/icon.icns"
     },
     "win": {
       "target": "NSIS",
