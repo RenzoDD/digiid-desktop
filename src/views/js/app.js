@@ -10,10 +10,9 @@ function FormOpen(frm) {
 	frm.classList.remove('d-none');
 }
 
-if (__dirname.indexOf("app.asar") !== -1)
-	global.path = __dirname.substring(0, __dirname.length - 29);
-else
-	global.path = __dirname.substring(0, __dirname.length - 10);
+global.path = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/digiid-desktop";
+if (!fs.existsSync(global.path))
+  fs.mkdirSync(global.path);
 
 if (fs.existsSync(global.path + '/wallet.dgb')) {
 	global.wallet = "software";

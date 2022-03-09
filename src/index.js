@@ -3,10 +3,9 @@ const fs = require('fs')
 const path = require('path')
 let myWindow = null;
 
-if (__dirname.indexOf("app.asar") !== -1)
-  global.path = __dirname.substring(0, __dirname.length - 23);
-else
-  global.path = __dirname.substring(0, __dirname.length - 4);
+global.path = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/digiid-desktop";
+if (!fs.existsSync(global.path))
+  fs.mkdirSync(global.path);
 
 // handle url
 var uri = process.argv[1] || '';
