@@ -59,7 +59,7 @@
         "deb",
         "rpm"
       ],
-      "category":"Authentication",
+      "category": "Authentication",
       "icon": "src/views/img/icon.icns"
     },
     "win": {

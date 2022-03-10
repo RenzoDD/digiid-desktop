@@ -17,13 +17,11 @@ if (!fs.existsSync(global.path))
 if (fs.existsSync(global.path + '/wallet.dgb')) {
 	global.wallet = "software";
 	FormOpen(frmApp);
-}
-else if (fs.existsSync(global.path + '/ledger.dgb')) {
+} else if (fs.existsSync(global.path + '/ledger.dgb')) {
 	global.wallet = "ledger";
 	gbPassword.classList.add('d-none');
 	FormOpen(frmApp);
-}
-else {
+} else {
 	FormOpen(frmStart);
 }
 

@@ -208,7 +208,7 @@ btnSettings.addEventListener('click', () => {
     FormOpen(frmSettings);
 });
 btnAbout.addEventListener('click', () => {
-    FormOpen(frmAbout);
+    //FormOpen(frmAbout);
 });
 
 
@@ -263,6 +263,7 @@ btnSign.addEventListener('click', async () => {
         catch {
             lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Connect hardware wallet";
             gbHash.classList.add('d-none');
+            lblHash.innerHTML = "";
         }
 
         lblHash.innerHTML = SHA256(txtURI.value).toString('hex');
@@ -278,6 +279,7 @@ btnSign.addEventListener('click', async () => {
             catch {
                 lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Open DigiByte app";
                 gbHash.classList.add('d-none');
+                lblHash.innerHTML = "";
             }
 
             if (btc && address && result) {
@@ -291,6 +293,7 @@ btnSign.addEventListener('click', async () => {
                     lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Authentication failed";
 
                 gbHash.classList.add('d-none');
+                lblHash.innerHTML = "";
             }
         }
     }
