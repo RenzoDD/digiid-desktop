@@ -1,0 +1,70 @@
+{
+  "name": "digiid-desktop",
+  "version": "0.5.0",
+  "description": "A Digi-ID implementation for Desktop Operating Systems",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder build --dir",
+    "dist": "electron-builder build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RenzoDD/digiid-desktop.git"
+  },
+  "author": {
+    "name": "Renzo Diaz",
+    "email": "renzo.diaz@remadi.net"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RenzoDD/digiid-desktop/issues"
+  },
+  "homepage": "https://github.com/RenzoDD/digiid-desktop#readme",
+  "dependencies": {
+    "@ledgerhq/hw-app-btc": "^6.24.1",
+    "@ledgerhq/hw-transport-node-hid": "^6.24.1",
+    "digibyte-js": "^1.2.4"
+  },
+  "devDependencies": {
+    "electron": "^17.1.0",
+    "electron-builder": "^22.14.13"
+  },
+  "build": {
+    "productName": "Digi-ID",
+    "appId": "org.digibyte.digiid",
+    "nsis": {
+      "artifactName": "Digi-ID Setup ${version}.${ext}",
+      "uninstallDisplayName": "Digi-ID"
+    },
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "icon": "src/views/img/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "Authentication",
+      "icon": "src/views/img/icon.icns"
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "src/views/img/icon.ico"
+    }
+  }
+}

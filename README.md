@@ -2,17 +2,13 @@
 
 ![Licence](https://img.shields.io/badge/licence-MIT-green)
 ![NodeJS Version](https://img.shields.io/badge/nodejs-14.15.1-blue)
-![Platform](https://img.shields.io/badge/platform-linux--64%20%7C%20win--64%20%7C%20ios--64-lightgrey)
+![Platform](https://img.shields.io/badge/platform-linux--64%20%7C%20win--64-lightgrey)
 
 **A Digi-ID implementation for Desktop operating systems**
 
 ## Get Started 📦
 
-Download the binary that match your OS and you are ready to go!
-
-## User Manual 📖
-
-You can find all the documentation and information [here](docs/readme.md).
+Download the installer that match your OS, execute it and you are ready to go!
 
 ## Development 🛠️
 
@@ -24,14 +20,13 @@ npm install
 
 ## Building the Binaries ✨
 
-To build the `digiid-desktop` binary you must have globally installed `pkg` package:
+To build the `digiid-desktop` run this command:
 
 ```sh
-npm install -g pkg
-npm run build
+npm run dist
 ```
 
-This will generate the binaries in the `build` folder.
+This will generate the binaries in the `dist` folder.
 
 ## Security 🛡️
 
