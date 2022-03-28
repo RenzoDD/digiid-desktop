@@ -194,7 +194,10 @@ btnCheckSign.addEventListener('click', () => {
     var digiid = null;
 
     try { digiid = new DigiID(txtURI.value) }
-    catch { }
+    catch {
+        lblStatus.innerHTML = "<i class='bi bi-x-octagon-fill'></i> Invalid Digi-ID URI";
+        setTimeout(() => { lblStatus.innerHTML = "Digi-ID authentication protocol"; }, 5000);
+    }
 
     if (digiid) {
         lblCallback.innerHTML = digiid.callback;
@@ -208,7 +211,7 @@ btnSettings.addEventListener('click', () => {
     FormOpen(frmSettings);
 });
 btnAbout.addEventListener('click', () => {
-    //FormOpen(frmAbout);
+    FormOpen(frmAbout);
 });
 
 
